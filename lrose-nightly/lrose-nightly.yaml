@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: lrose-nightly
+spec:
+  # Every day at midnight
+  schedule: "0 0 * * *"
+  timeZone: "US/Mountain"
+  # In case, for some reason, the job doesn't start, we can start it up to an hour late
+  startingDeadlineSeconds: 3600
+
+  # "false" by default. When set to "true", new Jobs will not be created
+  suspend: false
+
+  # Set to 3 by default, but we make it 2 here
+  successfulJobsHistoryLimit: 2
+  # Default is 1; Allows us to go back and see logs of up to 2 failed Jobs for troubleshooting
+  failedJobsHistoryLimit: 2
+
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: lrose-nightly
+            image: ubuntu:24.04
+            imagePullPolicy: IfNotPresent
+            command:
+            - /bin/bash
+            - "/lrose-nightly-scripts/build-and-install.sh"
+            volumeMounts:
+              - name: nfs-volume
+                mountPath: /share
+                readOnly: false
+              - name: lrose-nightly-cm
+                mountPath: /lrose-nightly-scripts
+          restartPolicy: OnFailure
+          nodeSelector:
+            capi.stackhpc.com/node-group: mediums
+          volumes:
+            - name: nfs-volume
+              nfs:
+                server: 172.24.46.63
+                path: /
+            - name: lrose-nightly-cm
+              configMap:
+                name: lrose-nightly
