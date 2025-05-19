@@ -42,7 +42,7 @@ RUN apt-get update --yes && \
 
 USER ${NB_UID}
 
-ADD gateway/environment.yml /tmp
+ADD /environment.yml /tmp
 
 # combine the RUN commands, to prevent intermediate docker images;
 #
@@ -58,10 +58,10 @@ RUN mamba install --quiet --yes \
 
 # LROSE auxiliary files
 COPY --chown=1000:100 \
-     gateway/update_workshop_material.ipynb \
-     gateway/.condarc \
-     gateway/.bashrc \
-     gateway/.profile \
+     /update_workshop_material.ipynb \
+     /.condarc \
+     /.bashrc \
+     /.profile \
      /
 
 # Jupyter with VNC auxiliary files
