@@ -11,7 +11,9 @@ LABEL maintainer="LROSE <lrose-help@lists.colostate.edu>"
 ENV LROSE_RELEASE="lrose-core-20250105" \
     LROSE_TARGET_OS="ubuntu_24.04" \
     LROSE_TARGET_ARCH="amd64" \
-    PATH="/usr/local/lrose/bin:$PATH"
+    PATH="/usr/local/lrose/bin:/share/lrose-nightly/bin:$PATH" \
+    LD_LIBRARY_PATH="/usr/local/lrose/lib:/share/lrose-nightly/lib:$LD_LIBRARY_PATH"
+
 # Has to be on a different instruction to use the previously defined parameters
 ENV LROSE_RELEASE_URL="https://github.com/NCAR/lrose-core/releases/download/${LROSE_RELEASE}/${LROSE_RELEASE}.${LROSE_TARGET_OS}.${LROSE_TARGET_ARCH}.deb" \
     # Jupyter with VNC parameters \
@@ -60,8 +62,10 @@ RUN mamba install --quiet --yes \
 COPY --chown=1000:100 \
      /update_workshop_material.ipynb \
      /.condarc \
-     /.bashrc \
+     /bashrc_lrose \
      /.profile \
+     /lrose-swap-install.py \
+     /lrose-swap-install.sh \
      /
 
 # Jupyter with VNC auxiliary files
