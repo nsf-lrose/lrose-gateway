@@ -66,6 +66,7 @@ COPY --chown=1000:100 \
      /.profile \
      /lrose-swap-install.py \
      /lrose-swap-install.sh \
+     /lrose-nightly.ipynb \
      /
 
 # Jupyter with VNC auxiliary files
