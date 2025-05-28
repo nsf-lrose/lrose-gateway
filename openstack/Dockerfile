@@ -36,6 +36,8 @@ gpgkey=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/repodata/repomd.xml.key\n' \
     echo 'openstack ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/openstack && \
     git clone https://github.com/zonca/jupyterhub-deploy-kubernetes-jetstream \
         /home/openstack/jupyterhub-deploy-kubernetes-jetstream && \
+    git clone https://github.com/nsf-lrose/lrose-gateway \
+        /home/openstack/lrose-gateway && \
     pip3 install --upgrade pip && \
     pip3 install --upgrade 'python-openstackclient<7' python-designateclient  \
         python-magnumclient python-octaviaclient --ignore-installed && \
