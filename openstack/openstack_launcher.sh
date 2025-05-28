@@ -1,7 +1,7 @@
 #!/bin/bash -f
 
 function usage() {
-  echo -e "Syntax: $(basename "$0") [-h] [-n <name>] [-p <ip>] [-o <openrc>]"
+  echo -e "Syntax: $(basename "$0") [-h] [-o <openrc>]"
   echo -e "Script to access OpenStack environment."
   echo -e "  -h, --help            Show this help text"
   echo -e "  -o, --openrc          OpenRC file path"
