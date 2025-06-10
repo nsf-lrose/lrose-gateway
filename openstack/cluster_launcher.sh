@@ -63,7 +63,6 @@ touch ${SECRETS}
 # Create necessary subdirectories
 for dir in "$CACHE" "$CONFIG" "$KUBE" "$LOCAL" "$NOVACLIENT" ; do
     mkdir -p "$dir"
-    echo "Ensured directory: $dir"
 done
 
 # Docker run command
