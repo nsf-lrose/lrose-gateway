@@ -1,0 +1,7 @@
+services:
+  lrose-build:
+    image: ubuntu:24.04
+    volumes:
+      - ./build-and-install.sh:/build-and-install.sh
+      - ./lrose-nightly/:/lrose-nightly/
+    command: bash /build-and-install.sh
