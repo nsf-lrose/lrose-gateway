@@ -32,8 +32,8 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Check mandatory arguments
-if [[ -z "$JUPYTERHUB" || -z "$IP" || -z "$OPENRC" ]]; then
-    echo "Error: Must supply JupyterHub name, IP, and OpenRC path."
+if [[ -z "$JUPYTERHUB" ||  -z "$OPENRC" ]]; then
+    echo "Error: Must supply JupyterHub name and OpenRC path."
     usage
 fi
 
@@ -62,6 +62,8 @@ done
 
 # Docker run command
 docker run -it --name "${JUPYTERHUB}" \
+       -e OPENSTACK_USER_ID=`id -u` \
+       -e OPENSTACK_GROUP_ID=`getent group $USER | cut -d':' -f3` \
        -v "${CACHE}:/home/openstack/.cache/" \
        -v "${CONFIG}:/home/openstack/.config/" \
        -v "${OPENRC}:/home/openstack/bin/openrc.sh" \

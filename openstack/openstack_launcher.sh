@@ -34,5 +34,7 @@ fi
 
 # Docker run command
 docker run -it --name "openstack" \
+       -e OPENSTACK_USER_ID=`id -u` \
+       -e OPENSTACK_GROUP_ID=`getent group $USER | cut -d':' -f3` \
        -v "${OPENRC}:/home/openstack/bin/openrc.sh" \
        nsf-lrose/lrose-gateway /bin/bash
