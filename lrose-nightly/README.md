@@ -24,7 +24,7 @@ lrose-nightly   0 0 * * *   US/Mountain   False     0        3h41m           3h4
 
 This should create a Job every night at midnight, US/Mountain time. If you want
 to manually run a Job, use the following:
-`kubectl create job lrose-core-build --from=cronjob/lrose-nightly`
+`kubectl create job -n jhub lrose-core-build --from=cronjob/lrose-nightly`
 
 ## The CronJob
 

@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: lrose-nightly
+  namespace: jhub
 spec:
   # Every day at midnight
   schedule: "0 0 * * *"
@@ -29,19 +30,19 @@ spec:
             - /bin/bash
             - "/lrose-nightly-scripts/build-and-install.sh"
             volumeMounts:
-              - name: nfs-volume
+              - name: home-nfs-shared
                 mountPath: /share
                 readOnly: false
+                subPath: "_shared"
               - name: lrose-nightly-cm
                 mountPath: /lrose-nightly-scripts
           restartPolicy: OnFailure
           nodeSelector:
             capi.stackhpc.com/node-group: mediums
           volumes:
-            - name: nfs-volume
-              nfs:
-                server: 172.24.46.63
-                path: /
+            - name: "home-nfs-shared"
+              persistentVolumeClaim:
+                claimName: "home-nfs"
             - name: lrose-nightly-cm
               configMap:
                 name: lrose-nightly

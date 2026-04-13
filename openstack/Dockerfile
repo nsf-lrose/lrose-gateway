@@ -1,7 +1,6 @@
 FROM rockylinux:9
 
-ARG TERRAFORM_VERSION=0.14.4
-ARG HELM_VERSION=3.8.1
+ARG HELM_VERSION=4.1.3
 
 ENV HOME=/home/openstack \
     PATH=/home/openstack/bin:$PATH
@@ -12,7 +11,13 @@ RUN mkdir -p /home/openstack/bin
 # COPY bin/*.sh /home/openstack/bin/
 COPY .bashrc /home/openstack/
 
-RUN printf '[kubernetes]\n\
+RUN printf "[gemfury-nushell] \n\
+name=Gemfury Nushell Repo \n\
+baseurl=https://yum.fury.io/nushell/ \n\
+enabled=1 \n\
+gpgcheck=0 \n\
+gpgkey=https://yum.fury.io/nushell/gpg.key" | tee /etc/yum.repos.d/fury-nushell.repo &&  \
+printf '[kubernetes]\n\
 name=Kubernetes\n\
 baseurl=https://pkgs.k8s.io/core:/stable:/v1.26/rpm/\n\
 enabled=1\n\
@@ -20,14 +25,12 @@ gpgcheck=1\n\
 repo_gpgcheck=0\n\
 gpgkey=https://pkgs.k8s.io/core:/stable:/v1.26/rpm/repodata/repomd.xml.key\n' \
     > /etc/yum.repos.d/kubernetes.repo && \
-    yum upgrade -y && yum install -y epel-release && \
-    yum install -y sudo man man-pages vim nano git wget unzip ncurses procps \
+    dnf upgrade -y && \
+    dnf install -y epel-release && \
+    dnf install -y sudo man man-pages vim nano git wget unzip ncurses procps \
     htop python3 telnet openssh openssh-clients openssl findutils diffutils \
-    vi less kubectl pip rsync jq && \
-    yum clean all && rm -rf /var/cache/yum && \
-    wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
-    unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /usr/local/bin/ && \
-    rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
+    vi less kubectl pip rsync jq nushell && \
+    dnf clean all && rm -rf /var/cache/yum && \
     curl -sSL https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz | \
     tar -xz -C /usr/local/bin --strip-components=1 linux-amd64/helm && \
     useradd -ms /bin/bash openstack && \
